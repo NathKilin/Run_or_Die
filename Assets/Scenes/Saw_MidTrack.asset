@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5d6ef4f27eb594789b41e0c7e63be9, type: 3}
+  m_Name: Saw_MidTrack
+  m_EditorClassIdentifier: 
+  displayName: Saw
+  kind: 0
+  oscillate: 1
+  moveAxis: {x: 1, y: 0}
+  amplitude: 1.2
+  moveSpeed: 1.3
+  rotate: 1
+  rotationSpeed: 220
