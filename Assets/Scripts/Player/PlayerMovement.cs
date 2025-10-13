@@ -9,13 +9,15 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 7.0f;
     public Vector3 currentDirection = Vector3.right;
     
-    
-
+    private InputHandler inputHandler;
     private Rigidbody rigidBody;
+    
     
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        inputHandler = FindObjectOfType<InputHandler>();
+        inputHandler.OnScreenTapped += Jump;
     }
 
     
@@ -32,9 +34,9 @@ public class PlayerMovement : MonoBehaviour
     void HandleHorizontalMovement()
     {
         rigidBody.linearVelocity = new Vector3(
-            currentDirection.x * horizontalSpeed * Time.deltaTime,
+            currentDirection.x * horizontalSpeed ,
             rigidBody.linearVelocity.y,
-            currentDirection.z * horizontalSpeed * Time.deltaTime);
+            currentDirection.z * horizontalSpeed );
     }
     
 
@@ -46,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         // Creates a constant jump force independent on speed
         rigidBody.linearVelocity = new Vector3(
             rigidBody.linearVelocity.x,
-            jumpForce * Time.deltaTime * 100,
+            jumpForce,
             rigidBody.linearVelocity.z);
     }
     
