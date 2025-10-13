@@ -40,7 +40,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        rigidBody.AddForce(Vector3.up * (jumpForce * Time.deltaTime));
+        // Depends on the current speed of the player 
+        //rigidBody.AddForce(Vector3.up * (jumpForce * Time.deltaTime));
+        
+        // Creates a constant jump force independent on speed
+        rigidBody.linearVelocity = new Vector3(
+            rigidBody.linearVelocity.x,
+            jumpForce * Time.deltaTime * 100,
+            rigidBody.linearVelocity.z);
     }
     
 
