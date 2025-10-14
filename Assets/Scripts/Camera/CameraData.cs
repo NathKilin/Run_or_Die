@@ -17,7 +17,7 @@ public class CameraData : MonoBehaviour
     public float GetPlayerRelativeHeightToCamera()
     {
         return Mathf.Clamp01(
-            camera.ViewportToWorldPoint(
+            camera.WorldToViewportPoint(
                 player.transform.position
                 ).y
         );
