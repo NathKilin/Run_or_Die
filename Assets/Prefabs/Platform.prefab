@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6795346236587372183}
   - component: {fileID: 7780512289231236683}
   - component: {fileID: 8329314810159301635}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,5 +133,6 @@ MonoBehaviour:
   safeMin01: 0.1
   safeMax01: 0.9
   zAt: 2
+  zNudgePerIndex: 0.02
   gapCells: 1
   spawnOnEnable: 1

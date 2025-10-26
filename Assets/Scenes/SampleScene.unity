@@ -1591,7 +1591,7 @@ GameObject:
   - component: {fileID: 1438320200}
   - component: {fileID: 1438320199}
   - component: {fileID: 1438320198}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1621,12 +1621,12 @@ MonoBehaviour:
   fallSpeed: 10
   platformMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   footProbeHalfSize: {x: 0.35, y: 0.35}
   footProbeDepth: 0.15
   lethalMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!136 &1438320199
 CapsuleCollider:
   m_ObjectHideFlags: 0
