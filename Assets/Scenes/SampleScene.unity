@@ -2353,8 +2353,8 @@ GameObject:
   - component: {fileID: 1438320201}
   - component: {fileID: 1438320200}
   - component: {fileID: 1438320199}
-  - component: {fileID: 1438320198}
   - component: {fileID: 1438320203}
+  - component: {fileID: 1438320204}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -2362,35 +2362,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1438320198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438320197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 342cc0f6a7729304eb0a53a7de1e5364, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anchorY: -2.5
-  anchorZ: 2
-  leftLimitX: -2.5
-  rightLimitX: 5.5
-  driftSpeed: 5
-  startDir: 1
-  wallPool: {fileID: 360954838}
-  climbSpeed: 8
-  fallSpeed: 9
-  platformMask:
-    serializedVersion: 2
-    m_Bits: 128
-  footProbeHalfSize: {x: 0.35, y: 0.35}
-  footProbeDepth: 0.15
-  lethalMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!136 &1438320199
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2507,8 +2478,20 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 3
+--- !u!114 &1438320204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438320197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e1045588809264781db9c9e9ac55fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1581580815
 GameObject:
   m_ObjectHideFlags: 0
