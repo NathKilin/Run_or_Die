@@ -20,7 +20,7 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         float playerHeight = CameraData.GetObjectRelativeHeight(player.gameObject);
-        if (playerHeight > heightToFollowUp || playerHeight < heightToFollowDown) {
+        if (playerHeight > heightToFollowUp) { //  || playerHeight < heightToFollowDown
             transform.position = new Vector3(
                 transform.position.x,
                 Mathf.Lerp(transform.position.y, player.transform.position.y, Time.deltaTime * cameraSpeed),

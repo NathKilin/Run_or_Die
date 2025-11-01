@@ -349,6 +349,8 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585549}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -474,6 +476,33 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceec7eb0e32373249859618936174bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 107a4d8e67d771048a116c24c6bfb7ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heightToFollowUp: 0.65
+  heightToFollowDown: 0.35
+  cameraSpeed: 4
 --- !u!1 &360954837
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,9 +534,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segments:
   - {fileID: 1926921203}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1474598022}
+  - {fileID: 1605961585}
+  - {fileID: 884260745}
   speed: 5
   despawnY: -20
   segmentHeight: 0
