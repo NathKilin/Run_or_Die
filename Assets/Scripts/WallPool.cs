@@ -2,66 +2,82 @@ using UnityEngine;
 
 public class WallPool : MonoBehaviour
 {
-    [Header("Segments (drag the 4 segments here)")]
+    [Header("Segments (exactly 4, ordered doesn't matter)")]
     public Transform[] segments;
 
-    [Header("Motion")]
-    [Tooltip("Base climb speed; Player may override at runtime with positive/negative values.")]
-    public float speed = 5f;           // default magnitude
-    public float despawnY = -20f;      // Y position to recycle segments
+    [Header("Player to track")]
+    [SerializeField] private Transform player;
 
-    [Header("Height (0 = auto from Renderer)")]
-    public float segmentHeight = 0f;   // if 0, auto-calc from Renderer
+    [Header("Segment size")]
+    [Tooltip("If 0, we will measure the height from the first segment renderer.")]
+    public float segmentHeight = 0f;
 
-    float _height;
+    [Header("How close to the edge before we swap")]
+    [Range(0.05f, 0.5f)]
+    public float edgePercent = 0.2f;
 
-    // === NEW: externally controlled, signed speed ===
-    public float CurrentSpeed { get; private set; }
+    private float _height;
 
     void Start()
     {
         _height = (segmentHeight > 0f) ? segmentHeight : MeasureHeight();
-        CurrentSpeed = speed; // default: keep previous behavior
+
+        if (player == null)
+        {
+            var pm = FindFirstObjectByType<PlayerMovement>();
+            if (pm != null)
+                player = pm.transform;
+        }
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (segments == null || segments.Length == 0) return;
+        if (player == null) return;
 
-        // Move world by signed CurrentSpeed
-        Vector3 delta = Vector3.down * CurrentSpeed * Time.deltaTime;
-        for (int i = 0; i < segments.Length; i++)
-            segments[i].position += delta;
+        SortSegmentsByYDesc();
 
-        // Recycle segments that passed despawnY
-        for (int i = 0; i < segments.Length; i++)
+        Transform top      = segments[0];
+        Transform upperMid = segments[1];
+        Transform lowerMid = segments[2];
+        Transform bottom   = segments[3];
+
+        float triggerUp   = upperMid.position.y + (_height * (1f - edgePercent));
+        float triggerDown = lowerMid.position.y + (_height * edgePercent);
+
+        float playerY = player.position.y;
+
+        // going up -> move bottom to top
+        if (playerY >= triggerUp)
         {
-            if (segments[i].position.y < despawnY)
+            Vector3 p = bottom.position;
+            p.y = top.position.y + _height;
+            bottom.position = p;
+            return;
+        }
+
+        // going down -> move top to bottom
+        if (playerY <= triggerDown)
+        {
+            Vector3 p = top.position;
+            p.y = bottom.position.y - _height;
+            top.position = p;
+            return;
+        }
+    }
+
+    void SortSegmentsByYDesc()
+    {
+        for (int i = 0; i < segments.Length - 1; i++)
+        {
+            for (int j = i + 1; j < segments.Length; j++)
             {
-                float highestY = GetHighestY();
-                Vector3 pos = segments[i].position;
-                pos.y = highestY + _height;
-                segments[i].position = pos;
+                if (segments[i].position.y < segments[j].position.y)
+                {
+                    (segments[i], segments[j]) = (segments[j], segments[i]);
+                }
             }
         }
-    }
-
-    // === NEW: public setter ===
-    public void SetCurrentSpeed(float s)
-    {
-        CurrentSpeed = s;
-    }
-
-    float GetHighestY()
-    {
-        float highest = float.NegativeInfinity;
-        if (segments != null)
-        {
-            for (int i = 0; i < segments.Length; i++)
-                if (segments[i] && segments[i].position.y > highest)
-                    highest = segments[i].position.y;
-        }
-        return (highest == float.NegativeInfinity) ? 0f : highest;
     }
 
     float MeasureHeight()
@@ -69,16 +85,15 @@ public class WallPool : MonoBehaviour
         if (segments != null && segments.Length > 0 && segments[0])
         {
             var r = segments[0].GetComponentInChildren<Renderer>();
-            if (r != null) return r.bounds.size.y;
+            if (r != null)
+                return r.bounds.size.y;
         }
-        return 10f; // fallback
+        return 10f;
     }
 
-#if UNITY_EDITOR
-    void OnDrawGizmosSelected()
+    // ====== COMPATIBILITY WITH OLD PLAYERDRIFTCONTROLLER ======
+    public void SetCurrentSpeed(float speed)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(new Vector3(-100f, despawnY, 0f), new Vector3(100f, despawnY, 0f));
+        // no-op in the new system
     }
-#endif
 }
