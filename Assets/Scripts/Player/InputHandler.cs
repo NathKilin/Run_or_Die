@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    
+    public delegate void ScreenTapHandler();
+    public event ScreenTapHandler OnScreenTapped;
 
-    // Update is called once per frame
+    private int previousTouchCount = 0;
+    
+    
     void Update()
     {
+        if (Input.touchCount > 0 && previousTouchCount == 0) {
+            OnScreenTapped?.Invoke();
+        }    
         
+        previousTouchCount = Input.touchCount;
     }
 }

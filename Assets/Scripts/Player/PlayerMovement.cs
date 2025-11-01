@@ -28,9 +28,19 @@ public class PlayerMovement : MonoBehaviour
             rigidBody.linearVelocity.y,
             currentDirection.z * horizontalSpeed);
     }
+
+
+    void Update()
+    {
+        HandleHorizontalMovement();
+        
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Jump();    
+        }
+    }
     
 
-    void Update(){
+    void Jump(){
         // Creates a constant jump force independent on speed
         rigidBody.linearVelocity = new Vector3(
             rigidBody.linearVelocity.x,
@@ -48,7 +58,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Level"))
+        if (other.gameObject.CompareTag("Level")) {
             FlipPlayer();
+            Debug.Log("Collision Enter");
+        }
     }
 }
