@@ -108,4 +108,15 @@ public class PlayerMovement : MonoBehaviour
             // Debug.Log("Collision Enter");
         }
     }
+
+
+    public void PressedDashButtonLeft() //Directions direction
+    {
+        Dash(Directions.Left);
+    }
+    
+    public void PressedDashButtonRight()
+    {
+        Dash(Directions.Right);
+    }
 }
