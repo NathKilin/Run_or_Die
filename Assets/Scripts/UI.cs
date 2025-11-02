@@ -45,12 +45,7 @@ public class UI : MonoBehaviour
     }
 
 
-    public void PressedChangeDashMode()
-    {
-        isDashModeSwipe = !isDashModeSwipe;
-        // TODO :
-        // Create a button that does dash instead of swipe
-    }
+    public void PressedChangeDashMode() { isDashModeSwipe = !isDashModeSwipe; } // TODO : Add visual confirmation of changed mode
     
 
     public void PressedPause()
