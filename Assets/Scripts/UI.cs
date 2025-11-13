@@ -26,6 +26,13 @@ public class UI : MonoBehaviour
     }
 
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            PressedPause();
+    }
+    
+    
     void SetUIVisiblity(bool isVisible)
     {
         settingsMenu.gameObject.SetActive(isVisible);
