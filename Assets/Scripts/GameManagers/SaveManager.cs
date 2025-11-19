@@ -1,4 +1,27 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+
+public class PlayerData
+{
+    public Vector3 position;
+    public Vector3 velocity;
+}
+
+
+public class ObstacleData
+{
+    public GameObject obstaclePrefab;
+    public Vector3 position;
+}
+
+
+public class GameSaveData
+{
+    public PlayerData playerData;
+    public List<ObstacleData> activeObstacles;
+}
+
 
 public class SaveManager : MonoBehaviour
 {
