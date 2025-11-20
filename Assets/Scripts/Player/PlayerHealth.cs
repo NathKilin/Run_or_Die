@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
     public UnityEvent onDamaged;
     public UnityEvent onDied;
 
-    public bool IsDead => currentHealth <= 0;
+    public bool IsDead => currentHealth <= 0;   
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
 
@@ -57,6 +57,11 @@ public class PlayerHealth : MonoBehaviour
         
         onDied?.Invoke();
         Debug.Log("Player has died!");
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver();
+        }
 
         var col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
