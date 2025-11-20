@@ -4,24 +4,25 @@ public class ObstacleDamage : MonoBehaviour
 {
     public int damageAmount = 1;
 
-    private void OnCollisionEnter(Collision collision)
+    private void HandleDamage(GameObject target)
     {
-        PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+        PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
         
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(damageAmount);
+            
+            Destroy(gameObject); 
         }
     }
 
-    // In case of player going through obstacle insted of colliding
+    private void OnCollisionEnter(Collision collision)
+    {
+        HandleDamage(collision.gameObject);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-        
-        if (playerHealth != null)
-        {
-            playerHealth.TakeDamage(damageAmount);
-        }
+        HandleDamage(other.gameObject);
     }
 }

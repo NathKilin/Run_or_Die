@@ -10,27 +10,29 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     public GameObject gameOverUI; 
-
-    void Awake()
+void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
 
-// when player´s health reaches zero    
+    // when player´s health reaches zero    
     public void GameOver()
     {
-        if (isGameOver) return;
+    if (isGameOver) return;
 
         isGameOver = true;
         Debug.Log("Game Manager: GAME OVER INITIALIZED");
-
         if (ScoreManager.Instance != null)
             ScoreManager.Instance.StopScoring();
 
+        
         if (gameOverUI != null)
+        { 
             gameOverUI.SetActive(true);
-            Time.timeScale = 0f;
+        }
+        
+        Time.timeScale = 0f;
 
     }
 
