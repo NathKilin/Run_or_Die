@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {
+    
     [SerializeField] private VerticalLayoutGroup mainButtons;
     [SerializeField] private VerticalLayoutGroup playButtons;
     [SerializeField] private VerticalLayoutGroup settingsButtons;
@@ -48,6 +49,7 @@ public class MenuUI : MonoBehaviour
         SaveManager.slotToLoad = saveSlot;
         // TODO : 
         // SceneManager.LoadScene();
+        SceneManager.LoadScene("SampleScene");
     }
     
 

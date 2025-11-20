@@ -4150,7 +4150,7 @@ MonoBehaviour:
   mainButtons: {fileID: 219821945}
   playButtons: {fileID: 1646662689}
   settingsButtons: {fileID: 37430761}
-  savedGamesButtons: {fileID: 0}
+  savedGamesButtons: {fileID: 970628144}
 --- !u!1 &2061843165
 GameObject:
   m_ObjectHideFlags: 0

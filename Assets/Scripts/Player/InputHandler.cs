@@ -29,6 +29,7 @@ public class InputHandler : MonoBehaviour
     private Touch[] currentTouches;
     private Touch[] previousTouches;
 
+    private bool didSwipeThisFrame = false;
     private Vector2 touchStartPosition;
     private Vector2 touchEndPosition;
     public float swipeThreshold = 30f;
@@ -52,9 +53,12 @@ public class InputHandler : MonoBehaviour
 
     void Update()
     {
+        bool didTapThisFrame = false; //
+        didSwipeThisFrame = false; //
         currentTouches = Input.touches;
         if (Input.touchCount > 0 && previousTouchCount == 0) {
-            OnScreenTapped?.Invoke();
+            didTapThisFrame = true; //
+            //OnScreenTapped?.Invoke();
             OnTouchStarted?.Invoke();
             isTouching = true;
             timeTouching = .0f;
@@ -69,6 +73,10 @@ public class InputHandler : MonoBehaviour
         
         previousTouchCount = Input.touchCount;
         previousTouches = currentTouches;
+
+        if (didTapThisFrame && !didSwipeThisFrame) { // 
+            OnScreenTapped?.Invoke(); // 
+        } //
     }
 
 
@@ -97,6 +105,9 @@ public class InputHandler : MonoBehaviour
         if (swipeVector.magnitude < swipeThreshold) {
             return;
         }
+        
+        // Did swipe continue logic
+        didSwipeThisFrame = true; //
         
         // Figure out which direction is swiped
         if (Mathf.Abs(swipeVector.x) > Mathf.Abs(swipeVector.y))

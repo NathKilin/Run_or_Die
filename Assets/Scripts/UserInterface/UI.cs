@@ -13,7 +13,8 @@ public class UI : MonoBehaviour
     [SerializeField] private VerticalLayoutGroup menuButtons;
     [SerializeField] private VerticalLayoutGroup settingsButtons;
     [SerializeField] private TextMeshProUGUI titleText;
-    
+
+    [SerializeField] private Button dashModeButton;
     [SerializeField] private Button dashButtonLeft;
     [SerializeField] private Button dashButtonRight;
     private bool isDashModeSwipe = true;
@@ -23,6 +24,8 @@ public class UI : MonoBehaviour
     {
         playerMovement = FindFirstObjectByType<PlayerMovement>();   
         SetUIVisiblity(false);
+        isDashModeSwipe = !true;
+        PressedChangeDashMode();
     }
 
 
@@ -52,7 +55,16 @@ public class UI : MonoBehaviour
     }
 
 
-    public void PressedChangeDashMode() { isDashModeSwipe = !isDashModeSwipe; } // TODO : Add visual confirmation of changed mode
+    public void PressedChangeDashMode()
+    {
+        isDashModeSwipe = !isDashModeSwipe;
+        ColorBlock cb = dashModeButton.colors;
+        cb.normalColor = isDashModeSwipe ? new Color(124,50,65) : new Color(65,50,124);
+        dashModeButton.colors = cb;
+        TextMeshProUGUI text = dashModeButton.GetComponentInChildren<TextMeshProUGUI>();
+        text.text = "DASH MODE : \n";
+        text.text += !isDashModeSwipe ? "ON" : "OFF";
+    } 
     
 
     public void PressedPause()
