@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1084660233592490474}
   - component: {fileID: 2948041318683983136}
   - component: {fileID: 9169594459447564929}
+  - component: {fileID: 7843561839706704773}
   m_Layer: 6
   m_Name: spin blade
   m_TagString: Obstacle
@@ -108,3 +109,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2293686, y: 0.19319993, z: 1.2293687}
   m_Center: {x: 0.00000047683716, y: 0, z: 0.000000029802322}
+--- !u!114 &7843561839706704773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740652380937166069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0083f2b7660999f46b7d5d151b9f25cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 1
