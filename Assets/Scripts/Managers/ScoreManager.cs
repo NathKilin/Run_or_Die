@@ -13,6 +13,7 @@ public class ScoreManager : MonoBehaviour
     private float startY;
     private float currentScore;
     private bool isScoring = true;
+    private float bestDistance = 0f;
 
     void Awake()
     {
@@ -31,23 +32,30 @@ public class ScoreManager : MonoBehaviour
         {
             Debug.LogWarning("Playing the default difficulty: normal.");
         }
+
+    bestDistance = 0f;   
+    currentScore = 0f;   
+    UpdateUI();  
     }
 
-    void Update()
-    {
-        if (!isScoring || player == null) return;
+void Update()
+{
+    if (!isScoring || player == null) return;
 
-        float distance = player.position.y - startY;
-        
-        if (distance > 0)
-        {
-            int multiplier = (difficultyProfile != null) ? difficultyProfile.scoreMultiplier : 10;
+    float distance = player.position.y - startY;
 
-            currentScore = distance * multiplier;
-        }
-  
-        UpdateUI();
-    }
+    if (distance > bestDistance)
+    {
+        bestDistance = distance;   
+
+        int multiplier = (difficultyProfile != null) ? difficultyProfile.scoreMultiplier : 10;
+
+        currentScore = bestDistance * multiplier;
+    }
+
+    UpdateUI();
+}
+
 
     void UpdateUI()
     {
