@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI : MonoBehaviour
@@ -12,6 +13,8 @@ public class UI : MonoBehaviour
     
     [SerializeField] private VerticalLayoutGroup menuButtons;
     [SerializeField] private VerticalLayoutGroup settingsButtons;
+    [SerializeField] private VerticalLayoutGroup saveButtons;
+    [SerializeField] private GridLayoutGroup saveSlots;
     [SerializeField] private TextMeshProUGUI titleText;
 
     [SerializeField] private Button dashModeButton;
@@ -26,6 +29,7 @@ public class UI : MonoBehaviour
         SetUIVisiblity(false);
         isDashModeSwipe = !true;
         PressedChangeDashMode();
+        SetSaveSlots();
     }
 
 
@@ -33,6 +37,38 @@ public class UI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             PressedPause();
+    }
+
+
+    void SetSaveSlots()
+    {
+        for (int i = 0; i < saveSlots.transform.childCount; i++)
+        {
+            Button child = saveSlots.transform.GetChild(i).GetComponent<Button>();
+            TextMeshProUGUI text = child.GetComponentInChildren<TextMeshProUGUI>();
+            int saveSlot = i + 1;
+            GameSaveData savedGame = SaveManager.Instance.GetSavedGameData(saveSlot);
+            child.onClick.RemoveAllListeners();
+            child.onClick.AddListener(() => SaveGame(saveSlot));
+            text.text = savedGame != null ? $"Last Played : \n[{savedGame.lastPlayedDate}]" : "[EMPTY]";
+        }
+    }
+
+
+    private void SaveGame(int saveSlot)
+    {
+        Debug.Log("Saving Game On Slot : " + saveSlot);
+        
+        SaveManager.Instance.SaveGame(saveSlot);
+        Debug.Log("Saved Game Through SaveManager");
+        
+        Debug.Log("Setting Text Of Button");
+        // Set the save button's text again 
+        TextMeshProUGUI text = saveSlots.transform.GetChild(saveSlot - 1).GetComponent<Button>().GetComponentInChildren<TextMeshProUGUI>();
+        Debug.Log($"{text}, is null : {text == null}");
+        GameSaveData savedGame = SaveManager.Instance.GetSavedGameData(saveSlot);
+        text.text = $"Last Played : \n[{savedGame.lastPlayedDate}]";
+        Debug.Log($"Text's text : {text.text}");
     }
     
     
@@ -42,19 +78,41 @@ public class UI : MonoBehaviour
         pauseButton.gameObject.SetActive(!isVisible);
         dashButtonLeft.gameObject.SetActive(!isVisible && !isDashModeSwipe);
         dashButtonRight.gameObject.SetActive(!isVisible && !isDashModeSwipe);
-        SetUIMode(true);
+        SetUIMode(MenuMode.Main);
     }
 
 
-    void SetUIMode(bool isMainMenu)
+    void SetUIMode(MenuMode mode)
     {
         // Debug.Log($"Setting UI Mode|\t\t|Main Menu : {isMainMenu}");
-        titleText.text = isMainMenu ? "Main Menu" : "Settings";
-        settingsButtons.gameObject.SetActive(!isMainMenu);
-        menuButtons.gameObject.SetActive(isMainMenu);
+        switch (mode)
+        {
+            case MenuMode.Main:
+                titleText.text = "Main Menu";
+                settingsButtons.gameObject.SetActive(false);
+                menuButtons.gameObject.SetActive(true);
+                saveButtons.gameObject.SetActive(false);
+                break;
+            case MenuMode.Settings:
+                titleText.text = "Settings";
+                settingsButtons.gameObject.SetActive(true);
+                menuButtons.gameObject.SetActive(false);
+                saveButtons.gameObject.SetActive(false);
+                break;
+            case MenuMode.Save:
+                titleText.text = "Save";
+                settingsButtons.gameObject.SetActive(false);
+                menuButtons.gameObject.SetActive(false);
+                saveButtons.gameObject.SetActive(true);
+                break;
+        }
+       
     }
 
 
+    public void PressedSaveButton() { SetUIMode(MenuMode.Save); }
+    
+    
     public void PressedChangeDashMode()
     {
         isDashModeSwipe = !isDashModeSwipe;
@@ -83,13 +141,22 @@ public class UI : MonoBehaviour
     }
 
 
-    public void PressedSettings() { SetUIMode(false); }
+    public void PressedSettings() { SetUIMode(MenuMode.Settings); }
+
+    public void PressedQuit()
+    {
+        SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
+    }
     
-    public void PressedQuit() { Application.Quit(); }
-    
-    public void PressedGoBack() { SetUIMode(true); }
-    
-    
-    
+    public void PressedGoBack() { SetUIMode(MenuMode.Main); }
+
+
+    private enum MenuMode
+    {
+        Main,
+        Settings,
+        Save,
+    }  
     
 }

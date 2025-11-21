@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Dash(Directions direction)
     {
-        Debug.Log($"Swiped {direction.ToString()}");
+        // Debug.Log($"Swiped {direction.ToString()}");
         
         // Don't dash vertically 
         if (direction == Directions.Up || direction == Directions.Down) {

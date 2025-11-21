@@ -58,15 +58,56 @@ public class SaveManager : MonoBehaviour
     /// The function to save the game data given to disk, on a certain slot
     /// If the slot is invalid the game will crash with an error
     /// </summary>
-    public void SaveGame(GameSaveData data, int slot = 1)
+    public void SaveGame(int slot = 1)
     {
+        Debug.Log("[SaveManager] Saving Game On Slot : " + slot);
+        GameSaveData data = GetDataToSave(); 
+        
         if (slot > maxSlots || slot <= 0) {
+            Debug.Log("[SaveManager] Error, Invalid Slot. Out of Bounds");
             throw new System.Exception($"Save Slot [{slot}] Out Of Bounds [1 - {maxSlots}]");
         }
+        Debug.Log("[SaveManager] No invalid save slot error, proceeding");
+        
         string json = JsonUtility.ToJson(data, true);
-        string filePath = Path.Combine(Application.persistentDataPath, $"Saves/Save_{slot}");
+        Debug.Log($"[SaveManager] Save Data : [{json}]");
+        string folderPath = Path.Combine(Application.persistentDataPath, "Saves");
+        if (!Directory.Exists(folderPath)) {
+            Directory.CreateDirectory(folderPath);
+        }
+        string filePath = Path.Combine(folderPath, $"Save_{slot}.json");
+        Debug.Log($"[SaveManager] File Path : [{filePath}]");
+        // Doesnt go further than here vvvvvvv
         File.WriteAllText(filePath, json);
+        Debug.Log($"[SaveManager] Written Json Data to file path");
         Debug.Log("Game saved to: " + filePath);
+    }
+
+
+    private GameSaveData GetDataToSave()
+    {
+        GameSaveData data = new GameSaveData();
+        
+        data.playerData = new PlayerData();
+        Rigidbody player =  GameObject.FindFirstObjectByType<PlayerMovement>().GetComponent<Rigidbody>();
+        data.playerData.position = player.position;
+        data.playerData.velocity = player.linearVelocity;
+        
+        data.lastPlayedDate = DateTime.UtcNow;
+        
+        // TODO : 
+        
+        //data.score = FindAnyObjectByType<>()
+
+        //List<ObstacleData> activeObstacles = new();
+        //foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("Obstacle")) {
+            
+        //}
+        //data.activeObstacles = activeObstacles;
+        
+        // TODO :
+        
+        return data;
     }
 
 
@@ -76,7 +117,12 @@ public class SaveManager : MonoBehaviour
     /// </summary>
     public GameSaveData GetSavedGameData(int slot)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, $"Saves/Save_{slot}");
+        string folderPath = Path.Combine(Application.persistentDataPath, "Saves");
+        if (!Directory.Exists(folderPath)) {
+            Directory.CreateDirectory(folderPath);
+        }
+        string filePath = Path.Combine(folderPath, $"Save_{slot}.json");
+        
         if (File.Exists(filePath)) {
             string json = File.ReadAllText(filePath);
             GameSaveData loadedData = JsonUtility.FromJson<GameSaveData>(json);
