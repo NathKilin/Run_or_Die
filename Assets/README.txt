@@ -9,8 +9,8 @@ Task 2 :
     - Student B : ( Device Orientation ) Nathan
     - Shared Effort : Nathan + Eitan
 Task 3 :
-    - Student A : 
-    - Student B : 
+    - Student A : ( Difficulty, Health & SO ) Nathan
+    - Student B : ( Main Menu, Save & Load ) Eitan
 Task 4 :
-    - Student A : 
-    - Student B :  
+    - Student A : ( Notification, Daily Bonus & Analytics ) Nathan
+    - Student B : ( Collectibles and Their Gameplay Effect ) Eitan

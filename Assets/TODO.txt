@@ -1,1 +1,22 @@
-psdpspddsp
+Errors & Bugs : 
+---------------
+- Collisions are sometimes weird, player gets stuck on the wall
+- When running into saws sometimes the player glitches and loses input and flies outside the map
+
+
+General Issues :
+----------------
+- Health bar doesn't appear
+- Score text is very small
+- Saving doesn't save all information [ Obstacles & Score & todo - Collectibles
+- Player falls indefinitely - player can't lose to falling
+
+
+Stuff to do :
+--------------
+- Make the game BEAUTIFUL : 
+    - Main menu 
+    - User Interface
+    - Player & Visual Assets ( Models ) 
+- Sounds
+- probably more stuff
