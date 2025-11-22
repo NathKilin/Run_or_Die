@@ -21,7 +21,7 @@ public class ObstacleData
 public class GameSaveData
 {
     public int score;
-    public DateTime lastPlayedDate;
+    public String lastPlayedDate;
     public PlayerData playerData;
     public List<ObstacleData> activeObstacles;
 }
@@ -60,27 +60,22 @@ public class SaveManager : MonoBehaviour
     /// </summary>
     public void SaveGame(int slot = 1)
     {
-        Debug.Log("[SaveManager] Saving Game On Slot : " + slot);
+        //Debug.Log("[SaveManager] Saving Game On Slot : " + slot);
         GameSaveData data = GetDataToSave(); 
         
         if (slot > maxSlots || slot <= 0) {
             Debug.Log("[SaveManager] Error, Invalid Slot. Out of Bounds");
             throw new System.Exception($"Save Slot [{slot}] Out Of Bounds [1 - {maxSlots}]");
         }
-        Debug.Log("[SaveManager] No invalid save slot error, proceeding");
+
         
         string json = JsonUtility.ToJson(data, true);
-        Debug.Log($"[SaveManager] Save Data : [{json}]");
         string folderPath = Path.Combine(Application.persistentDataPath, "Saves");
         if (!Directory.Exists(folderPath)) {
             Directory.CreateDirectory(folderPath);
         }
         string filePath = Path.Combine(folderPath, $"Save_{slot}.json");
-        Debug.Log($"[SaveManager] File Path : [{filePath}]");
-        // Doesnt go further than here vvvvvvv
         File.WriteAllText(filePath, json);
-        Debug.Log($"[SaveManager] Written Json Data to file path");
-        Debug.Log("Game saved to: " + filePath);
     }
 
 
@@ -93,7 +88,7 @@ public class SaveManager : MonoBehaviour
         data.playerData.position = player.position;
         data.playerData.velocity = player.linearVelocity;
         
-        data.lastPlayedDate = DateTime.UtcNow;
+        data.lastPlayedDate = DateTime.Now.ToString("dd-MM-yy");
         
         // TODO : 
         

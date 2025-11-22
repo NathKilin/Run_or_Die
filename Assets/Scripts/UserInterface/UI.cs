@@ -57,18 +57,14 @@ public class UI : MonoBehaviour
 
     private void SaveGame(int saveSlot)
     {
-        Debug.Log("Saving Game On Slot : " + saveSlot);
-        
         SaveManager.Instance.SaveGame(saveSlot);
-        Debug.Log("Saved Game Through SaveManager");
         
-        Debug.Log("Setting Text Of Button");
         // Set the save button's text again 
         TextMeshProUGUI text = saveSlots.transform.GetChild(saveSlot - 1).GetComponent<Button>().GetComponentInChildren<TextMeshProUGUI>();
-        Debug.Log($"{text}, is null : {text == null}");
         GameSaveData savedGame = SaveManager.Instance.GetSavedGameData(saveSlot);
-        text.text = $"Last Played : \n[{savedGame.lastPlayedDate}]";
-        Debug.Log($"Text's text : {text.text}");
+        string s = $"Last Played : \n[{savedGame.lastPlayedDate}]";
+        Debug.Log(s);
+        text.text = s;
     }
     
     
@@ -84,7 +80,6 @@ public class UI : MonoBehaviour
 
     void SetUIMode(MenuMode mode)
     {
-        // Debug.Log($"Setting UI Mode|\t\t|Main Menu : {isMainMenu}");
         switch (mode)
         {
             case MenuMode.Main:
