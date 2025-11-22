@@ -12,4 +12,4 @@ public class DifficultyProfile : ScriptableObject
     
     [Header("Score")]
     public int scoreMultiplier = 10;
-}
+}   
