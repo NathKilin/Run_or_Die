@@ -2,7 +2,22 @@ using UnityEngine;
 
 public class ObstacleDamage : MonoBehaviour
 {
-    public int damageAmount = 1;
+    [Header("Damage")]
+    [SerializeField] private int damageAmount = 1; 
+
+    private void Start()
+    {
+        // Se existir DifficultyManager, usamos o dano do profile atual
+        if (DifficultyManager.Instance != null &&
+            DifficultyManager.Instance.currentProfile != null)
+        {
+            var profile = DifficultyManager.Instance.currentProfile;
+            damageAmount = profile.obstacleDamage;
+
+            Debug.Log($"[ObstacleDamage] Damage = {damageAmount} (" +
+                      profile.difficultyName + ")");
+        }
+    }
 
     private void HandleDamage(GameObject target)
     {
@@ -11,8 +26,7 @@ public class ObstacleDamage : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(damageAmount);
-            
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
     }
 

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fed15ddb66b7774092c125c41bd549a, type: 3}
   m_Name: EasyMode
   m_EditorClassIdentifier: 
-  difficultyName: Normal
-  maxHealth: 3
+  difficultyName: Easy
+  maxHealth: 5
   obstacleDamage: 1
-  obstacleSpawnRate: 2
+  obstacleSpawnRate: 3
   scoreMultiplier: 10

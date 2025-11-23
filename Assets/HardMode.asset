@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fed15ddb66b7774092c125c41bd549a, type: 3}
   m_Name: HardMode
   m_EditorClassIdentifier: 
-  difficultyName: Normal
+  difficultyName: Hard
   maxHealth: 3
   obstacleDamage: 1
-  obstacleSpawnRate: 2
+  obstacleSpawnRate: 5
   scoreMultiplier: 10

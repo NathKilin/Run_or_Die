@@ -20,19 +20,28 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        if (difficultyProfile != null)
+        if (DifficultyManager.Instance != null &&
+            DifficultyManager.Instance.currentProfile != null)
         {
-            maxHealth = difficultyProfile.maxHealth;
-            currentHealth = maxHealth;
+            ApplyDifficulty(DifficultyManager.Instance.currentProfile);
         }
-        else
+        else if (difficultyProfile != null)
         {
-            Debug.LogWarning("Nenhum DifficultyProfile associado! Usando valores padrão.");
-            maxHealth = 3;
-            currentHealth = 3;
+            ApplyDifficulty(difficultyProfile);
         }
-        
+    }
+
+        public void ApplyDifficulty(DifficultyProfile profile)
+    {
+        difficultyProfile = profile;
+
+        maxHealth = profile.maxHealth;
+        currentHealth = maxHealth;
+
         onHealthChanged?.Invoke(currentHealth);
+
+        Debug.Log("[PlayerHealth] Applying difficulty: " +
+                  profile.difficultyName + " (HP max = " + maxHealth + ")");
     }
 
     public bool TakeDamage(int amount)
