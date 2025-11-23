@@ -10,11 +10,13 @@ General Issues :
 - Score text is very small
 - Saving doesn't save all information [ Obstacles & Score & todo - Collectibles
 - Player falls indefinitely - player can't lose to falling
+    - Player can sometimes fall into other platforms which stops their fall
+- Loading doesn't set values ( score )
 
 
 Stuff to do :
 --------------
-- Make the game BEAUTIFUL : 
+- Make the game BEAUTIFUL : 🎇🎇🎇🎇
     - Main menu 
     - User Interface
     - Player & Visual Assets ( Models ) 

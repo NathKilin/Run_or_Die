@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-    
+
 
 public enum Directions
 {
@@ -13,9 +13,6 @@ public enum Directions
 
 public class InputHandler : MonoBehaviour
 {
-
-    
-    
     public delegate void ScreenTapHandler();
     public event ScreenTapHandler OnScreenTapped;
     public event ScreenTapHandler OnTouchStarted;

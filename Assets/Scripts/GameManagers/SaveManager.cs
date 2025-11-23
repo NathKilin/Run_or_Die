@@ -2,14 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
-
-public class PlayerData
-{
-    public Vector3 position;
-    public Vector3 velocity;
-}
-
+using UnityEngine.SceneManagement;
 
 public class ObstacleData
 {
@@ -22,7 +15,8 @@ public class GameSaveData
 {
     public int score;
     public String lastPlayedDate;
-    public PlayerData playerData;
+    public Vector3 playerPosition;
+    public Vector3 playerVelocity;
     public List<ObstacleData> activeObstacles;
 }
 
@@ -34,6 +28,7 @@ public class SaveManager : MonoBehaviour
     public int maxSlots = 4; // How many slots are there for saving
 
     public static int slotToLoad = 0;
+
     
     /// <summary>
     /// Awake function to set the singleton.
@@ -42,15 +37,22 @@ public class SaveManager : MonoBehaviour
     private void Awake()
     {
         if (Instance != null && Instance != this) {
-            Destroy(gameObject); 
-        } else {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            Destroy(gameObject);
+            return;
         }
 
-        if (slotToLoad != 0) {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (slotToLoad > 0 && slotToLoad <= maxSlots) {
             LoadGame(slotToLoad);
-        }
+        } 
+        
+        slotToLoad = 0;
     }
 
 
@@ -83,16 +85,15 @@ public class SaveManager : MonoBehaviour
     {
         GameSaveData data = new GameSaveData();
         
-        data.playerData = new PlayerData();
         Rigidbody player =  GameObject.FindFirstObjectByType<PlayerMovement>().GetComponent<Rigidbody>();
-        data.playerData.position = player.position;
-        data.playerData.velocity = player.linearVelocity;
+        data.playerPosition = player.position;
+        data.playerVelocity = player.linearVelocity;
         
         data.lastPlayedDate = DateTime.Now.ToString("dd-MM-yy");
         
         // TODO : 
         
-        //data.score = FindAnyObjectByType<>()
+        data.score = (int)ScoreManager.Instance.currentScore;
 
         //List<ObstacleData> activeObstacles = new();
         //foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("Obstacle")) {
@@ -121,11 +122,11 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(filePath)) {
             string json = File.ReadAllText(filePath);
             GameSaveData loadedData = JsonUtility.FromJson<GameSaveData>(json);
-            Debug.Log("Game loaded from: " + filePath);
+            //Debug.Log("Game loaded from: " + filePath);
             return loadedData;
         }
         
-        Debug.LogWarning("Save file not found: " + filePath);
+        //Debug.LogWarning("Save file not found: " + filePath);
         return null;
     }
 
@@ -137,27 +138,39 @@ public class SaveManager : MonoBehaviour
     {
         PlayerMovement playerMovement = Transform.FindFirstObjectByType<PlayerMovement>();
         if (playerMovement == null) {
-            Debug.Log("Scene does not contain player, aborting load.");
+            Debug.Log("[SaveManager] Scene does not contain player, aborting load.");
             return;
         }
+        Debug.Log("[SaveManager] Loading Save Data & Applying To Game");
         
         // Get save data
         GameSaveData data = GetSavedGameData(slot);
         
         // Set player
-        playerMovement.gameObject.transform.position = data.playerData.position;
-        playerMovement.gameObject.GetComponent<Rigidbody>().linearVelocity = data.playerData.velocity;
+        playerMovement.gameObject.transform.position = data.playerPosition;
+        playerMovement.gameObject.GetComponent<Rigidbody>().linearVelocity = data.playerVelocity;
         
         // Set obstacles
         // TODO
         
         // Set scene others ( score , etc.. )
+        ScoreManager.Instance.currentScore = data.score;
+        ScoreManager.Instance.startY = data.playerPosition.y;
         // TODO
     }
     
     
-    
-    
+    private void OnEnable()
+    {
+        // Prevent double-subscription by removing first
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     
     
     

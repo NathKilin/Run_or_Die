@@ -71,7 +71,7 @@ public class PlatformAttachment : MonoBehaviour
         int placed = 0;
         int safety = 40;
 
-        Debug.Log($"[PlatformAttachment:{name}] SpawnAll target={targetCount}");
+        //Debug.Log($"[PlatformAttachment:{name}] SpawnAll target={targetCount}");
 
         while (placed < targetCount && safety-- > 0)
         {
@@ -126,7 +126,7 @@ public class PlatformAttachment : MonoBehaviour
 
             _spawned.Add(go);
 
-            Debug.Log($"[PlatformAttachment:{name}] SPAWN idx={placed} x={chosenGX} w={width} y={y:F2} z={z:F2} go={go.GetInstanceID()}");
+            //Debug.Log($"[PlatformAttachment:{name}] SPAWN idx={placed} x={chosenGX} w={width} y={y:F2} z={z:F2} go={go.GetInstanceID()}");
             placed++;
         }
     }
@@ -139,7 +139,7 @@ public class PlatformAttachment : MonoBehaviour
             var go = _spawned[i];
             if (go != null)
             {
-                Debug.Log($"[PlatformAttachment:{name}] DESTROY go={go.GetInstanceID()}");
+                //Debug.Log($"[PlatformAttachment:{name}] DESTROY go={go.GetInstanceID()}");
                 Destroy(go);
             }
         }

@@ -64,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
             rigidBody.linearVelocity.x,
             jumpForce,
             rigidBody.linearVelocity.z);
+
+        GameManager.Instance.timesJumped++;
     }
 
 
@@ -91,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
                 Mathf.Min(rigidBody.linearVelocity.y,0),
                 0);
         }
+
+        GameManager.Instance.timesDashed++;
     }
     
 
