@@ -12,6 +12,7 @@ General Issues :
 - Player falls indefinitely - player can't lose to falling
     - Player can sometimes fall into other platforms which stops their fall
 - Loading doesn't set values ( score )
+- Player can´t change difficulty in menu yet
 
 
 Stuff to do :
@@ -21,4 +22,4 @@ Stuff to do :
     - User Interface
     - Player & Visual Assets ( Models ) 
 - Sounds
-- probably more stuff
+- probably more stuff 
