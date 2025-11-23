@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -54,8 +55,13 @@ public class GameManager : MonoBehaviour
         }
 
         CreateNewStatistic($"Score : {(int)ScoreManager.Instance.currentScore}");
-        CreateNewStatistic($"Times Jumped : {timesJumped}");
-        CreateNewStatistic($"Times Dashed : {timesDashed}");
+        CreateNewStatistic($"Jumps : {timesJumped}");
+        CreateNewStatistic($"Dashes : {timesDashed}");
+        foreach (KeyValuePair<CollectiblesManager.CollectibleType, CollectibleCounter> pair in CollectiblesManager.Instance.counters) {
+            CreateNewStatistic(
+                $"{pair.Key.ToString()} taken:\n{pair.Value.currentAmount}/{pair.Value.maxAmount}",
+                85);
+        }
     }
 
 

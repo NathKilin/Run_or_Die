@@ -110,6 +110,8 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Level")) {
             FlipPlayer();
             // Debug.Log("Collision Enter");
+        } else if (other.gameObject.CompareTag("Collectible")) {
+            CollectiblesManager.Instance.ConsumeCollectible();
         }
     }
 
