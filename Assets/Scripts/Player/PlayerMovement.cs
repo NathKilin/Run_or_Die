@@ -6,21 +6,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement Values")]
     [Header("Basic Variables")]
-<<<<<<< Updated upstream
     public float horizontalSpeed = 5.0f;
     public float jumpForce = 7.0f;
     
     private Vector3 currentDirection = Vector3.right;
-    
-=======
-    public float horizontalSpeed = 5.0f;   
-    public float jumpForce = 7.0f;       
 
-    private Vector3 currentDirection = Vector3.right;
     public float boostAmount = 1f;
     public float boostFadeRate = .2f;
 
->>>>>>> Stashed changes
     [Header("Dash Variables")]
     // How much force is added to the current dash force when dashing
     [SerializeField] private float dashForce = 4.5f;
@@ -50,13 +43,11 @@ public class PlayerMovement : MonoBehaviour
         if (currentDashForce > 1f) {
             currentDashForce = Mathf.Lerp(currentDashForce, 1f, dashForceFadeRate);    
         }
-<<<<<<< Updated upstream
         
         rigidBody.linearVelocity = new Vector3(
             currentDirection.x * horizontalSpeed * currentDashForce,
             rigidBody.linearVelocity.y,
             0f);
-=======
 
         Vector3 currentVelocity = rigidBody.linearVelocity;
 
@@ -64,31 +55,29 @@ public class PlayerMovement : MonoBehaviour
         currentVelocity.z = 0f;  
 
         rigidBody.linearVelocity = currentVelocity;
->>>>>>> Stashed changes
     }
 
 
     void Update()
     {
-<<<<<<< Updated upstream
         HandleHorizontalMovement();
-        
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Jump();    
-=======
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Jump();
->>>>>>> Stashed changes
-        }
 
-        if (boostAmount != 1f) {
-            boostAmount = Mathf.Lerp(boostAmount, 1f, boostFadeRate);
-            if (Mathf.Abs(boostAmount - 1f) < .1f) {
-                boostAmount = 1f;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+
+
+            if (boostAmount != 1f)
+            {
+                boostAmount = Mathf.Lerp(boostAmount, 1f, boostFadeRate);
+                if (Mathf.Abs(boostAmount - 1f) < .1f)
+                {
+                    boostAmount = 1f;
+                }
             }
         }
     }
-    
+
 
     void Jump(){
         // Creates a constant jump force independent on speed

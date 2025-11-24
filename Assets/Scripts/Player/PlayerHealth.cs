@@ -30,19 +30,7 @@ public class PlayerHealth : MonoBehaviour
             ApplyDifficulty(difficultyProfile);
         }
     }
-
-        public void ApplyDifficulty(DifficultyProfile profile)
-    {
-        difficultyProfile = profile;
-
-        maxHealth = profile.maxHealth;
-        currentHealth = maxHealth;
-
-        onHealthChanged?.Invoke(currentHealth);
-
-        Debug.Log("[PlayerHealth] Applying difficulty: " +
-                  profile.difficultyName + " (HP max = " + maxHealth + ")");
-    }
+    
 
     public bool TakeDamage(int amount)
     {
@@ -90,8 +78,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         onHealthChanged?.Invoke(currentHealth);
-<<<<<<< Updated upstream
-=======
+
     }
     
     
@@ -101,11 +88,11 @@ public class PlayerHealth : MonoBehaviour
 
         maxHealth = profile.maxHealth;
         currentHealth = maxHealth;
-
+        
         onHealthChanged?.Invoke(currentHealth);
 
         Debug.Log("[PlayerHealth] Applying difficulty: " +
                   profile.difficultyName + " (HP max = " + maxHealth + ")");
->>>>>>> Stashed changes
+
     }
 }
