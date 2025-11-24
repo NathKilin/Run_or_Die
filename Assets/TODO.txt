@@ -1,7 +1,7 @@
 Errors & Bugs : 
 ---------------
-- Collisions are sometimes weird, player gets stuck on the wall
-- When running into saws sometimes the player glitches and loses input and flies outside the map
+✔️ Collisions are sometimes weird, player gets stuck on the wall
+✔️ When running into saws sometimes the player glitches and loses input and flies outside the map
 
 
 General Issues :
@@ -12,7 +12,7 @@ General Issues :
 - Player falls indefinitely - player can't lose to falling
     - Player can sometimes fall into other platforms which stops their fall
 - Loading doesn't set values ( score )
-- Player can´t change difficulty in menu yet
+✔️ Player can´t change difficulty in menu yet
 
 
 Stuff to do :
