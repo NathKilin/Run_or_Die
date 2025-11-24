@@ -15,7 +15,7 @@ public class ScoreManager : MonoBehaviour
     public float currentScore;
     public float scoreBonus = 0;
     private bool isScoring = true;
-    private float bestDistance = 0f;
+    public float bestDistance = 0f;
 
     void Awake()
     {
