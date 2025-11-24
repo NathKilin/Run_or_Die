@@ -82,12 +82,12 @@ public class CollectiblesManager : MonoBehaviour
             case CollectibleType.Boost:
                 // TODO 
                 // Add Velocity Boost to PlayerMovement
-                playerMovement.boostAmount = 2.5f;
+                playerMovement.boostAmount = 1.5f;
                 break;
             case CollectibleType.Score:
                 // TODO
                 // Add Score to ScoreManager
-                ScoreManager.Instance.currentScore += 500;
+                ScoreManager.Instance.scoreBonus += 500;
                 break;
         }
         
