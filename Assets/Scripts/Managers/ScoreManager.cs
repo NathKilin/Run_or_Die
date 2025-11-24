@@ -13,6 +13,7 @@ public class ScoreManager : MonoBehaviour
 
     public float startY;
     public float currentScore;
+    public float scoreBonus = 0;
     private bool isScoring = true;
     private float bestDistance = 0f;
 
@@ -48,7 +49,7 @@ public class ScoreManager : MonoBehaviour
 
             int multiplier = (difficultyProfile != null) ? difficultyProfile.scoreMultiplier : 10;
 
-            currentScore = bestDistance * multiplier;
+            currentScore = bestDistance * multiplier + scoreBonus;
         }
 
         UpdateUI();

@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (boostAmount != 1f)
         {
-            boostAmount = Mathf.Lerp(boostAmount, 1f, boostFadeRate);
+            boostAmount = Mathf.Lerp(boostAmount, 1f, boostFadeRate * Time.deltaTime);
             if (Mathf.Abs(boostAmount - 1f) < .1f)
             {
                 boostAmount = 1f;
