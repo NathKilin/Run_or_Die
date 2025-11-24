@@ -2,27 +2,29 @@ using UnityEngine;
 
 public class ObstacleDamage : MonoBehaviour
 {
-    public int damageAmount = 1;
+    public int damageAmount = 1; 
+    private bool hasTriggered = false; 
 
-    private void HandleDamage(GameObject target)
-    {
-        PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
-        
-        if (playerHealth != null)
-        {
-            playerHealth.TakeDamage(damageAmount);
-            
-            Destroy(gameObject); 
-        }
-    }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        HandleDamage(collision.gameObject);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        HandleDamage(other.gameObject);
+        if (hasTriggered) 
+            return;
+
+        hasTriggered = true;
+
+        PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(damageAmount);
+
+            Collider col = GetComponent<Collider>();
+            if (col != null)
+                col.enabled = false;
+
+            Destroy(gameObject);
+        }
     }
 }
