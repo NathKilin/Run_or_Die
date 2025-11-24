@@ -60,6 +60,15 @@ public class PlayerHealth : MonoBehaviour
         return true;
     }
 
+
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        
+        onHealthChanged?.Invoke(currentHealth);
+    }
+    
+    
     private void Die()
     {
         if (currentHealth > 0) currentHealth = 0; 
@@ -81,5 +90,22 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         onHealthChanged?.Invoke(currentHealth);
+<<<<<<< Updated upstream
+=======
+    }
+    
+    
+    public void ApplyDifficulty(DifficultyProfile profile)
+    {
+        difficultyProfile = profile;
+
+        maxHealth = profile.maxHealth;
+        currentHealth = maxHealth;
+
+        onHealthChanged?.Invoke(currentHealth);
+
+        Debug.Log("[PlayerHealth] Applying difficulty: " +
+                  profile.difficultyName + " (HP max = " + maxHealth + ")");
+>>>>>>> Stashed changes
     }
 }
