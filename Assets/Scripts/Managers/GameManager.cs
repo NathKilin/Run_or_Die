@@ -31,19 +31,47 @@ public class GameManager : MonoBehaviour
     }
 
     // when player´s health reaches zero 
-    public void GameOver()
+// when player's health reaches zero 
+public void GameOver()
+{
+    if (isGameOver) return;
+
+    isGameOver = true;
+    Time.timeScale = 0f;
+
+    ScoreManager.Instance.StopScoring();
+
+    if (AnalyticsManager.Instance != null)
     {
-         if (isGameOver) return;
+        string reason = "death_obstacle";
 
-        isGameOver = true;
-        Time.timeScale = 0f;
-        
-        ScoreManager.Instance.StopScoring();
-        
-        gameOverUI.gameObject.SetActive(true);
-        SetStatistics();
+        int finalScore = (int)ScoreManager.Instance.currentScore;
 
+        float timeAlive = Time.timeSinceLevelLoad;
+
+        int obstaclesHit = 0;
+
+        AnalyticsManager.Instance.TrackRunEnded(
+            reason,
+            finalScore,
+            timeAlive,
+            obstaclesHit
+        );
+
+        UnityEngine.Analytics.Analytics.CustomEvent("run_stats", new Dictionary<string, object>
+        {
+            { "jumps", timesJumped },
+            { "dashes", timesDashed },
+            { "collectibles_health", CollectiblesManager.Instance.counters[CollectiblesManager.CollectibleType.Health].currentAmount },
+            { "collectibles_boost", CollectiblesManager.Instance.counters[CollectiblesManager.CollectibleType.Boost].currentAmount },
+            { "collectibles_score", CollectiblesManager.Instance.counters[CollectiblesManager.CollectibleType.Score].currentAmount }
+        });
     }
+
+    gameOverUI.gameObject.SetActive(true);
+    SetStatistics();
+}
+
 
 
     private void SetStatistics()
@@ -92,15 +120,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 }
