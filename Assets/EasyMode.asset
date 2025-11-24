@@ -15,5 +15,5 @@ MonoBehaviour:
   difficultyName: Easy
   maxHealth: 5
   obstacleDamage: 1
-  obstacleSpawnRate: 3
+  obstacleSpawnRate: 0.7
   scoreMultiplier: 10

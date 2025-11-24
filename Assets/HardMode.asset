@@ -15,5 +15,5 @@ MonoBehaviour:
   difficultyName: Hard
   maxHealth: 3
   obstacleDamage: 1
-  obstacleSpawnRate: 5
+  obstacleSpawnRate: 0.3
   scoreMultiplier: 10
