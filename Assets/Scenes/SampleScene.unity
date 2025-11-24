@@ -287,6 +287,7 @@ MonoBehaviour:
   startY: 0
   currentScore: 0
   scoreBonus: 0
+  bestDistance: 0
 --- !u!4 &18898210
 Transform:
   m_ObjectHideFlags: 0
@@ -2831,10 +2832,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 504668693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcee44024253637468eb7ab1bd9c52f5, type: 3}
+  m_Script: {fileID: 11500000, guid: f4e780da25194b544a64d34491185a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSlots: 4
+  obstaclePrefabs: []
 --- !u!4 &504668695
 Transform:
   m_ObjectHideFlags: 0
