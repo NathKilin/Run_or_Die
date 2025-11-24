@@ -22,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
     private InputHandler inputHandler;
     private Rigidbody rigidBody;
 
+    [Header("Audio")]
+    public AudioClip jumpAudio;
+    public AudioClip dashAudio;
+    public AudioClip collectibleAudio;
+    
+    
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -33,8 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleHorizontalMovement()
     {
-        if (currentDashForce > 1f)
-        {
+        if (currentDashForce > 1f) {
             currentDashForce = Mathf.Lerp(currentDashForce, 1f, dashForceFadeRate);
         }
 
@@ -50,16 +55,13 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleHorizontalMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             Jump();
         }
 
-        if (boostAmount != 1f)
-        {
+        if (boostAmount != 1f) {
             boostAmount = Mathf.Lerp(boostAmount, 1f, boostFadeRate * Time.deltaTime);
-            if (Mathf.Abs(boostAmount - 1f) < .1f)
-            {
+            if (Mathf.Abs(boostAmount - 1f) < .1f) {
                 boostAmount = 1f;
             }
         }
@@ -73,26 +75,25 @@ public class PlayerMovement : MonoBehaviour
             rigidBody.linearVelocity.z);
 
         GameManager.Instance.timesJumped++;
+        
+        AudioManager.Instance.PlaySound(jumpAudio);
     }
 
     void Dash(Directions direction)
     {
-        if (direction == Directions.Up || direction == Directions.Down)
-        {
+        if (direction == Directions.Up || direction == Directions.Down) {
             return;
         }
 
         Vector3 translatedDirection = direction == Directions.Left ? Vector3.left : Vector3.right;
 
-        if (translatedDirection != currentDirection)
-        {
+        if (translatedDirection != currentDirection) {
             FlipPlayer();
         }
 
         currentDashForce = dashForce;
 
-        if (isResetVerticalOnJump)
-        {
+        if (isResetVerticalOnJump) {
             rigidBody.linearVelocity = new Vector3(
                 rigidBody.linearVelocity.x,
                 Mathf.Min(rigidBody.linearVelocity.y, 0),
@@ -100,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         GameManager.Instance.timesDashed++;
+        AudioManager.Instance.PlaySound(dashAudio);
     }
 
     void FlipPlayer()
@@ -110,13 +112,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Level"))
-        {
+        if (other.gameObject.CompareTag("Level")) {
             FlipPlayer();
-        }
-        else if (other.gameObject.CompareTag("Collectible"))
-        {
+        } else if (other.gameObject.CompareTag("Collectible")) {
             CollectiblesManager.Instance.ConsumeCollectible();
+            AudioManager.Instance.PlaySound(collectibleAudio);
         }
     }
 

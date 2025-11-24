@@ -19,6 +19,9 @@ public class PlayerHealth : MonoBehaviour
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
 
+    public AudioClip hurtSound;
+    
+    
 private void Start()
 {
     if (DifficultyManager.Instance != null &&
@@ -60,6 +63,8 @@ private void Start()
         onDamaged?.Invoke();
         onHealthChanged?.Invoke(currentHealth);
 
+        AudioManager.Instance.PlaySound(hurtSound);
+        
         if (IsDead)
             Die();
 
