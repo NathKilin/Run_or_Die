@@ -19,23 +19,23 @@ public class PlayerHealth : MonoBehaviour
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
 
-    private void Start()
+private void Start()
+{
+    if (DifficultyManager.Instance != null &&
+        DifficultyManager.Instance.currentProfile != null)
     {
-        if (DifficultyManager.Instance != null &&
-            DifficultyManager.Instance.currentProfile != null)
-        {
-            ApplyDifficulty(DifficultyManager.Instance.currentProfile);
-        }
-        else if (difficultyProfile != null)
-        {
-            ApplyDifficulty(difficultyProfile);
-        }
-        else
-        {
-            // Fallback: at least notify UI about whatever value we start with
-            onHealthChanged?.Invoke(currentHealth);
-        }
+        ApplyDifficulty(DifficultyManager.Instance.currentProfile);
     }
+    else if (difficultyProfile != null)
+    {
+        ApplyDifficulty(difficultyProfile);
+    }
+    else
+    {
+        onHealthChanged?.Invoke(currentHealth);
+    }
+}
+
 
     public void ApplyDifficulty(DifficultyProfile profile)
     {
