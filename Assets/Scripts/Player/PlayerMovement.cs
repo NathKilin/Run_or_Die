@@ -3,120 +3,156 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     [Header("Movement Values")]
     [Header("Basic Variables")]
+<<<<<<< Updated upstream
+    public float horizontalSpeed = 5.0f;
+    public float jumpForce = 7.0f;
+    
+    private Vector3 currentDirection = Vector3.right;
+    
+=======
     public float horizontalSpeed = 5.0f;   
     public float jumpForce = 7.0f;       
 
-    private Vector3 currentDirection = Vector3.right; 
+    private Vector3 currentDirection = Vector3.right;
+    public float boostAmount = 1f;
+    public float boostFadeRate = .2f;
 
+>>>>>>> Stashed changes
     [Header("Dash Variables")]
-    [SerializeField] private float dashForce = 4.5f;     
-    private float currentDashForce = 1f;                 
-    [SerializeField] private float dashForceFadeRate = 1.5f; 
+    // How much force is added to the current dash force when dashing
+    [SerializeField] private float dashForce = 4.5f;
+    // How much to multiply the horizontal movement by per frame
+    private float currentDashForce = 1f;
+    // How fast the dash effect dissipates
+    [SerializeField] private float dashForceFadeRate = 1.5f;
+    // Whether to reset the vertical movement when dashing
     [SerializeField] private bool isResetVerticalOnJump = false;
-
+    
+    
     private InputHandler inputHandler;
     private Rigidbody rigidBody;
-
+    
+    
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-
         inputHandler = FindObjectOfType<InputHandler>();
         inputHandler.OnScreenTapped += Jump;
         inputHandler.OnScreenSwiped += Dash;
     }
 
+    
     void HandleHorizontalMovement()
     {
-        if (currentDashForce > 1f)
-        {
-            currentDashForce = Mathf.Lerp(currentDashForce, 1f, dashForceFadeRate * Time.fixedDeltaTime);
+        if (currentDashForce > 1f) {
+            currentDashForce = Mathf.Lerp(currentDashForce, 1f, dashForceFadeRate);    
         }
+<<<<<<< Updated upstream
+        
+        rigidBody.linearVelocity = new Vector3(
+            currentDirection.x * horizontalSpeed * currentDashForce,
+            rigidBody.linearVelocity.y,
+            0f);
+=======
 
         Vector3 currentVelocity = rigidBody.linearVelocity;
 
-        currentVelocity.x = currentDirection.x * horizontalSpeed * currentDashForce;
+        currentVelocity.x = currentDirection.x * horizontalSpeed * currentDashForce * boostAmount;
         currentVelocity.z = 0f;  
 
         rigidBody.linearVelocity = currentVelocity;
+>>>>>>> Stashed changes
     }
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+<<<<<<< Updated upstream
+        HandleHorizontalMovement();
+        
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Jump();    
+=======
+        if (Input.GetKeyDown(KeyCode.Space)) {
             Jump();
+>>>>>>> Stashed changes
+        }
+
+        if (boostAmount != 1f) {
+            boostAmount = Mathf.Lerp(boostAmount, 1f, boostFadeRate);
+            if (Mathf.Abs(boostAmount - 1f) < .1f) {
+                boostAmount = 1f;
+            }
         }
     }
+    
 
-    void FixedUpdate()
-    {
-        HandleHorizontalMovement(); 
-    }
-
-    void Jump()
-    {
+    void Jump(){
+        // Creates a constant jump force independent on speed
         rigidBody.linearVelocity = new Vector3(
             rigidBody.linearVelocity.x,
-            jumpForce,
+            jumpForce * boostAmount,
             rigidBody.linearVelocity.z);
 
         GameManager.Instance.timesJumped++;
     }
 
+
     void Dash(Directions direction)
     {
-        if (direction == Directions.Up || direction == Directions.Down)
+        // Debug.Log($"Swiped {direction.ToString()}");
+        
+        // Don't dash vertically 
+        if (direction == Directions.Up || direction == Directions.Down) {
             return;
-
-        Vector3 translatedDirection = direction == Directions.Left ? Vector3.left : Vector3.right;
-
-        if (translatedDirection != currentDirection)
-        {
-            FlipPlayer(); 
         }
 
+        Vector3 translatedDirection = direction == Directions.Left ? Vector3.left : Vector3.right;
+        if (translatedDirection != currentDirection) {
+            FlipPlayer();
+        }
+        
         currentDashForce = dashForce;
-
-        if (isResetVerticalOnJump)
-        {
-            var vel = rigidBody.linearVelocity;
-            vel.y = Mathf.Min(vel.y, 0);
-            rigidBody.linearVelocity = vel;
+        // TODO
+        // Figure out if resetting the horizontal movement is good 
+        
+        if (isResetVerticalOnJump) {
+            rigidBody.linearVelocity = new Vector3(
+                rigidBody.linearVelocity.x,
+                Mathf.Min(rigidBody.linearVelocity.y,0),
+                0);
         }
 
         GameManager.Instance.timesDashed++;
     }
-
+    
 
     void FlipPlayer()
     {
         transform.Rotate(Vector3.up, 180);
-        currentDirection = (currentDirection == Vector3.right) ? Vector3.left : Vector3.right;
+        currentDirection = currentDirection ==  Vector3.right ? Vector3.left : Vector3.right;
     }
 
-    // wall collision detection
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Level"))
-        {
+        if (other.gameObject.CompareTag("Level")) {
             FlipPlayer();
-        }
-        else if (other.gameObject.CompareTag("Collectible"))
-        {
+            // Debug.Log("Collision Enter");
+        } else if (other.gameObject.CompareTag("Collectible")) {
             CollectiblesManager.Instance.ConsumeCollectible();
         }
     }
 
-    public void PressedDashButtonLeft()
+
+    public void PressedDashButtonLeft() //Directions direction
     {
         Dash(Directions.Left);
     }
-
+    
     public void PressedDashButtonRight()
     {
         Dash(Directions.Right);

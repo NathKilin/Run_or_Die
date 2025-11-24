@@ -9,31 +9,39 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Debug Info")]
     [SerializeField] private int currentHealth;
-    [SerializeField] private int maxHealth;
-    
-    public UnityEvent<int> onHealthChanged;
+    [SerializeField] private int maxHealth;                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    public UnityEvent<int> onHealthChanged; 
     public UnityEvent onDamaged;
     public UnityEvent onDied;
 
-    public bool IsDead => currentHealth <= 0;
+    public bool IsDead => currentHealth <= 0;   
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
 
     private void Start()
     {
-        if (difficultyProfile != null)
+        if (DifficultyManager.Instance != null &&
+            DifficultyManager.Instance.currentProfile != null)
         {
-            maxHealth = difficultyProfile.maxHealth;
-            currentHealth = maxHealth;
+            ApplyDifficulty(DifficultyManager.Instance.currentProfile);
         }
-        else
+        else if (difficultyProfile != null)
         {
-            Debug.LogWarning("Nenhum DifficultyProfile associado! Usando valores padrão.");
-            maxHealth = 3;
-            currentHealth = 3;
+            ApplyDifficulty(difficultyProfile);
         }
+    }
+
+        public void ApplyDifficulty(DifficultyProfile profile)
+    {
+        difficultyProfile = profile;
+
+        maxHealth = profile.maxHealth;
+        currentHealth = maxHealth;
 
         onHealthChanged?.Invoke(currentHealth);
+
+        Debug.Log("[PlayerHealth] Applying difficulty: " +
+                  profile.difficultyName + " (HP max = " + maxHealth + ")");
     }
 
     public bool TakeDamage(int amount)
@@ -52,11 +60,19 @@ public class PlayerHealth : MonoBehaviour
         return true;
     }
 
+
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        
+        onHealthChanged?.Invoke(currentHealth);
+    }
+    
+    
     private void Die()
     {
-        if (currentHealth > 0)
-            currentHealth = 0;
-
+        if (currentHealth > 0) currentHealth = 0; 
+        
         onDied?.Invoke();
         Debug.Log("Player has died!");
 
@@ -66,24 +82,30 @@ public class PlayerHealth : MonoBehaviour
         }
 
         var col = GetComponent<Collider>();
-        if (col != null)
-            col.enabled = false;
-
-        var rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-
-            rb.isKinematic = true;
-        }
+        if (col != null) col.enabled = false;
+        
     }
 
     public void RestoreFullHealth()
     {
         currentHealth = maxHealth;
         onHealthChanged?.Invoke(currentHealth);
+<<<<<<< Updated upstream
+=======
+    }
+    
+    
+    public void ApplyDifficulty(DifficultyProfile profile)
+    {
+        difficultyProfile = profile;
 
+        maxHealth = profile.maxHealth;
+        currentHealth = maxHealth;
 
+        onHealthChanged?.Invoke(currentHealth);
+
+        Debug.Log("[PlayerHealth] Applying difficulty: " +
+                  profile.difficultyName + " (HP max = " + maxHealth + ")");
+>>>>>>> Stashed changes
     }
 }

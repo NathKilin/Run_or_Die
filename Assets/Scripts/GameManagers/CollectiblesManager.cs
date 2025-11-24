@@ -18,7 +18,7 @@ public class CollectiblesManager : MonoBehaviour
     
     #region Objects
     private GameObject playerObject;
-    private Rigidbody playerRigidbody;
+    private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
     
     [SerializeField] private GameObject collectiblePrefab;
@@ -54,7 +54,7 @@ public class CollectiblesManager : MonoBehaviour
         
         // -------- Set player object and components --------
         playerObject = GameObject.FindGameObjectWithTag("Player");
-        playerRigidbody = playerObject.GetComponent<Rigidbody>();
+        playerMovement = playerObject.GetComponent<PlayerMovement>();
         playerHealth = playerObject.GetComponent<PlayerHealth>();
         
         // -------- Set collectible values for scene --------
@@ -77,16 +77,24 @@ public class CollectiblesManager : MonoBehaviour
             case CollectibleType.Health:
                 // TODO 
                 // Add +1 Heart to health
+                playerHealth.Heal(1);
                 break;
             case CollectibleType.Boost:
                 // TODO 
                 // Add Velocity Boost to PlayerMovement
+                playerMovement.boostAmount = 2.5f;
                 break;
             case CollectibleType.Score:
                 // TODO
                 // Add Score to ScoreManager
+                ScoreManager.Instance.currentScore += 500;
                 break;
         }
+        
+        
+        // TODO 
+        // Add Sound ?
+        
         
         // -------- After the player has consumed the collectible spawn a new one --------
         SpawnNewCollectible();
@@ -107,6 +115,9 @@ public class CollectiblesManager : MonoBehaviour
             }
         }
         //-------- Set the current collectible type randomly --------
+        if (types.Count <= 0) // Don't spawn if the limit is reached on all
+            return;
+        
         CollectibleType type = types[Random.Range(0, types.Count)];
         currentCollectibleType = type;
         
