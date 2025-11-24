@@ -29,6 +29,10 @@ public class GameSaveData
     public Vector3 playerVelocity;
 
     public List<ObstacleData> activeObstacles = new();
+
+    public Dictionary<CollectiblesManager.CollectibleType, CollectibleCounter> collectibleDictionary;
+    public CollectiblesManager.CollectibleType currentCollectibleType;
+    public Vector3 currentCollectiblePosition;
 }
 
 [Serializable]
@@ -97,8 +101,7 @@ public class SaveManager : MonoBehaviour
     {
         GameSaveData data = GetDataToSave();
 
-        if (slot > maxSlots || slot <= 0)
-        {
+        if (slot > maxSlots || slot <= 0) {
             Debug.LogError($"Save Slot [{slot}] Out Of Bounds [1 - {maxSlots}]");
             return;
         }
@@ -114,6 +117,8 @@ public class SaveManager : MonoBehaviour
 
         Debug.Log($"[SaveManager] Game saved at slot {slot}");
     }
+    
+    
     private GameSaveData GetDataToSave()
     {
         GameSaveData data = new GameSaveData();
@@ -132,10 +137,9 @@ public class SaveManager : MonoBehaviour
         data.bestDistance = sm.bestDistance;
         data.scoreBonus   = sm.scoreBonus;
 
+        // OBSTACLES
         List<ObstacleData> obstacles = new();
-
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Obstacle"))
-        {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Obstacle")) {
             if (obj == null) continue;
 
             string rawName = obj.name;
@@ -149,9 +153,13 @@ public class SaveManager : MonoBehaviour
 
             obstacles.Add(od);
         }
-
         data.activeObstacles = obstacles;
 
+        // COLLECTIBLES
+        data.collectibleDictionary = CollectiblesManager.Instance.counters;
+        data.currentCollectibleType = CollectiblesManager.Instance.currentCollectibleType;
+        data.currentCollectiblePosition = CollectiblesManager.Instance.collectibleInstance.transform.position;
+        
         return data;
     }
 
@@ -170,8 +178,7 @@ public class SaveManager : MonoBehaviour
     public void LoadGame(int slot)
     {
         GameSaveData data = GetSavedGameData(slot);
-        if (data == null)
-        {
+        if (data == null) {
             Debug.LogWarning("[SaveManager] No save data found.");
             return;
         }
@@ -179,35 +186,29 @@ public class SaveManager : MonoBehaviour
         Debug.Log("[SaveManager] Loading Save Data...");
 
         // PLAYER
-
-PlayerMovement playerMovement = GameObject.FindFirstObjectByType<PlayerMovement>();
-if (playerMovement == null)
-{
-    Debug.LogWarning("[SaveManager] No PlayerMovement found in scene.");
-    return;
-}
-
-Rigidbody rb = playerMovement.GetComponent<Rigidbody>();
-
-
+        PlayerMovement playerMovement = GameObject.FindFirstObjectByType<PlayerMovement>();
+        if (playerMovement == null) {
+            Debug.LogWarning("[SaveManager] No PlayerMovement found in scene.");
+            return;
+        }
+        Rigidbody rb = playerMovement.GetComponent<Rigidbody>();
         playerMovement.transform.position = data.playerPosition;
         rb.linearVelocity = data.playerVelocity;
 
-        
+        // SCORE
         var sm = ScoreManager.Instance;
         sm.currentScore = data.score;
         sm.startY       = data.scoreStartY;
         sm.bestDistance = data.bestDistance;
         sm.scoreBonus   = data.scoreBonus;
 
+        // OBSTACLES
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Obstacle"))
             Destroy(obj);
 
-        foreach (ObstacleData o in data.activeObstacles)
-        {
+        foreach (ObstacleData o in data.activeObstacles) {
             GameObject prefab = GetObstaclePrefabById(o.prefabId);
-            if (prefab == null)
-            {
+            if (prefab == null) {
                 Debug.LogWarning($"[SaveManager] Missing prefab for id: {o.prefabId}");
                 continue;
             }
@@ -217,12 +218,18 @@ Rigidbody rb = playerMovement.GetComponent<Rigidbody>();
         }
 
         Debug.Log("[SaveManager] Load Complete.");
+        
+        // COLLECTIBLES
+        CollectiblesManager.Instance.counters = data.collectibleDictionary;
+        CollectiblesManager.Instance.currentCollectibleType = data.currentCollectibleType;
+        CollectiblesManager.Instance.collectibleInstance.transform.position = data.currentCollectiblePosition;
+        
+        
     }
 
     private GameObject GetObstaclePrefabById(string id)
     {
-        foreach (var entry in obstaclePrefabs)
-        {
+        foreach (var entry in obstaclePrefabs) {
             if (entry.id == id)
                 return entry.prefab;
         }

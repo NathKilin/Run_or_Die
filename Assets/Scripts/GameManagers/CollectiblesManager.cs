@@ -22,11 +22,11 @@ public class CollectiblesManager : MonoBehaviour
     private PlayerHealth playerHealth;
     
     [SerializeField] private GameObject collectiblePrefab;
-    private GameObject collectibleInstance;
+    public GameObject collectibleInstance;
     private Light collectibleLight;
     #endregion
 
-    private CollectibleType currentCollectibleType;
+    public CollectibleType currentCollectibleType;
     public static CollectiblesManager Instance;
     
     #region Adjustment Parameters
@@ -105,7 +105,7 @@ public class CollectiblesManager : MonoBehaviour
     // -------------------
     //   Spawning Methods
     // -------------------
-    private void SpawnNewCollectible()
+    public void SpawnNewCollectible()
     {
         // -------- Choose a random available type --------
         List<CollectibleType> types = new List<CollectibleType>();
